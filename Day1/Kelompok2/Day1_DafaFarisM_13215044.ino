@@ -41,7 +41,7 @@ struct state {
 
 void setup() {
   for (int i=0;i<ledcount;i++) pinMode(ledpin[i],OUTPUT);
-  //pinMode(backlightpin,OUTPUT);
+  pinMode(backlightpin,OUTPUT);
   for (int i=0;i<butcount;i++) {
     pinMode(butpin[i], INPUT);
     digitalWrite(butpin[i], HIGH);       //Turn on pullup resistors, no additional resistor needed. Remember that 0 means pressed.
