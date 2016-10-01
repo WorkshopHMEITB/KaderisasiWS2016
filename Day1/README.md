@@ -19,7 +19,7 @@
 
 2. ***Fitur Premium Kalkulator WSCalc 20160 (Spesifikasi Bonus, supplementory)***</br  >
   * **Buat board rangkaian sedemikian rupa sehingga rangkaian dapat dijadikan shield Arduino.** (*Shields are boards that can be plugged on top of the Arduino PCB extending its capabilities.* -https://www.arduino.cc/en/Main/ArduinoShields)
-  * **Menambah satu button lagi, yaitu *button undo input* (button 3) untuk mengurangi nilai bilangan input.** Contoh: Misal pengguna sedang menginput bilangan A. Pertama-tama button input ditekan 5 kali. Kemudian, button undo input ditekan 2 kali. Kemudian button input ditekan satu kali lagi. Terakhir, button submit ditekan. Maka bilangan A menjadi bernilai 4. 
+  * **Menambah satu button lagi, yaitu *button undo input* (button 3) untuk mengurangi nilai bilangan input. (maksimal hingga nol)** Contoh: Misal pengguna sedang menginput bilangan A. Pertama-tama button input ditekan 5 kali. Kemudian, button undo input ditekan 2 kali. Kemudian button input ditekan satu kali lagi. Terakhir, button submit ditekan. Maka bilangan A menjadi bernilai 4. 
   * **Ketika memasukkan bilangan A atau B, tulisan di LCD akan terupdate (sesuai nilai dari bilangan A dan B saat itu) tiap kali tombol input ditekan.**
   * **Merubah metode penginputan nilai agar lebih efisien (tanpa keypad)**. Berikut caranya:
     * setiap kali menekan button 2 (button input), nilai dari bilangan yang dimasukkan bertambah satu. Namun, jika sudah ditekan 9 kali, menekan sekali lagi membuat nilai dari bilangan kembali ke 0. (Button undo input bekerja seperti itu pula. Setiap menekan button undo input, nilai bilangan berkurang sebesar 1, jika sudah nol, maka menekan kembali membuat nilainya menjadi 9)
