@@ -26,7 +26,7 @@
     * Untuk menaikkan orde dari bilangan, pengguna harus menekan sebuah tombol baru, tombol *order left*. Contohnya seperti ini: Misal pengguna sedang menginput bilangan A. Pertama-tama button input ditekan 2 kali. Lalu button *order left* ditekan sekali. Kemudian, button input ditekan kembali sebanyak 3 kali. Lalu button *order left* ditekan lagi. Kemudian, button input ditekan 1 kali lagi. Terakhir, button submit ditekan. Maka nilai bilangan A menjadi bernilai 132.
   
 3. ***Rangkaian Kalkulator WSCalc 20160***</br  >
-  * **Rangkaian push button**</br  >
+  * **Rangkaian push button**</br  > (update: lebih baik gunakan internal pull up atau pull down dari Arduino saja dibandinhkan dengan rangkaian ini. Credit to Dafa Faris for informing me)
   ![push](https://github.com/WorkshopHMEITB/KaderisasiWS2016/blob/master/assets/images/push.PNG)
   * **Rangakain LED** </br  >
   ![LED](https://github.com/WorkshopHMEITB/KaderisasiWS2016/blob/master/assets/images/LED.PNG)
