@@ -25,9 +25,9 @@
   ![push](https://github.com/WorkshopHMEITB/KaderisasiWS2016/blob/master/assets/images/push.PNG)
   * Rangakain LED </br  >
   ![LED](https://github.com/WorkshopHMEITB/KaderisasiWS2016/blob/master/assets/images/LED.PNG)
-  * Pinout LCD 16x2 dan salah satu rangkaian yang mungkin untuk menghubungkan LCD dengan Arduino (Jangan lupa untuk menyesuaikan parameter pada insialisasi LCD sebelum *setup loop*. Jika ingin menggunakan rangkaian yang dibawah ini dengan persis, maka tuliskan *LiquidCrystal lcd(12, 13, 5, 4, 3, 2);* sebelum *setup loop*)</br  >
+  * Pinout LCD 16x2 dan salah satu rangkaian yang mungkin untuk menghubungkan LCD dengan Arduino (Jangan lupa untuk menyesuaikan parameter pada insialisasi LCD sebelum *setup loop*. Jika ingin menggunakan rangkaian yang dibawah ini dengan persis, maka tuliskan *LiquidCrystal lcd(12, 13, 5, 4, 3, 2);* sebelum *setup loop*)</br  ></br  >
   ![lcd](https://github.com/WorkshopHMEITB/KaderisasiWS2016/blob/master/assets/images/lcd.png)</br  >
-  ![lcdarduino](https://github.com/WorkshopHMEITB/KaderisasiWS2016/blob/master/assets/images/lcdarduino.png)
+  ![lcdarduino](https://github.com/WorkshopHMEITB/KaderisasiWS2016/blob/master/assets/images/lcdarduino.jpg)
 
 6. ***Detail Tugas***
   1.	Membuat kode Arduino kalkulator ***WSCalc 20160***
