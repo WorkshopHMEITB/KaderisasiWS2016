@@ -44,7 +44,7 @@
 Comming soon...
 
 8. ***Deadline*** </br>
-Selasa, 3 Oktober 2016
+Sabtu, 8 Oktober 2016 <UPDATED!>
 
 9. ***Informasi Tambahan***
   * Setiap anggota kelompok harus membuat kode Arduino untuk tugas kalkulator ini.
