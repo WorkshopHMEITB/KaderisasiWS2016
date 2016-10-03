@@ -33,6 +33,7 @@ int calc=0;       //Designating math operation to do
 int pointer=0;    //Designating number pointer
 double ans=0;
 long int iterate = 1; //Based on pointer
+int strpos=0;     //Records string position for running text
 
 struct state {
   bool now;
@@ -73,6 +74,8 @@ void loop() {
   Serial.print(glbstate);
   Serial.println();
 
+  if (glbstate==0) scrolltext(10,23); //Scroll text with 10 ms delay and 23 char length
+  
   //Button 1 - Enter
   if ((butstate[0].now == HIGH) && (butstate[0].now != butstate[0].prev)) {
     ledoff();
@@ -99,7 +102,7 @@ void loop() {
 
   iterate = powf(10,pointer);
 
-  //Hardcode, problem: 10^x sometimes return 10^x -1 or 10^x -2 even using custom function using int
+  //Dirty, problem: 10^x sometimes return 10^x -1 or 10^x -2 even using custom function using int
   while ((iterate % 10 != 0) && (iterate!=1)) iterate++;
   
   //Button 2 - Increase
@@ -132,7 +135,7 @@ void loop() {
   }
 
   
-  //Button 5 - Pointer right
+  //Button 5 - Pointer right. <Addition> opposite of pointer left
   if ((butstate[4].now == HIGH) && (butstate[4].now != butstate[4].prev)) {
     if (glbstate>=1 && glbstate<=2) pointer--;    //Move the pointer right
   }
@@ -163,7 +166,7 @@ void displaynum() { //<Addition> Display current numbers and operation symbol in
   lcd.print(operators[calc]);
   lcd.print(' ');
   lcd.print(num[1]);
-  lcd.setCursor(0,1);           //Second row <Needs checking>
+  lcd.setCursor(0,1);
   if (glbstate>=4) lcd.print(ans);;
 }
 
@@ -179,3 +182,19 @@ void loading() {  //~2s of fading LEDs
     delay(1);
   }
 }
+
+void scrolltext(int dely, int len) {
+  //Move left len times (or disapepar)
+  if (strpos<len) {
+    lcd.scrollDisplayLeft();
+    strpos++;
+    delay(dely);
+  } else { //Text completely disappear
+    //Move right without delay, so it'd be warped on the right edge
+    while (strpos>-16) { //16 being the width of the LCD
+      lcd.scrollDisplayRight();
+      strpos--;
+    }
+  }
+}
+
