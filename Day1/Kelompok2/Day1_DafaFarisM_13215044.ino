@@ -11,15 +11,17 @@
 //#include <LiquidCrystal.h>
 
 //Set I2C Adress
-LiquidCrystal_I2C lcd(0x38);
+//LiquidCrystal_I2C lcd(0x3F);
+LiquidCrystal_I2C  lcd(0x3F,2,1,0,4,5,6,7);
 //LiquidCrystal lcd(12, 13, 8, 9, 10, 11); //RS, E, D4, D5, D6, D7
 
 //Hardware specs
-const int backlightpin=13;
+//const int backlightpin=13;
 const int butpin[]={3,4,5,6,7}; //Button enter, increase, decrease, pointer left, pointer right
 const int butcount=sizeof(butpin)/sizeof(int);
 const int ledpin[]={9,10,11};   //Must be PWM
 const int ledcount=sizeof(ledpin)/sizeof(int);
+const int flicker=30; //Delay for scrolling text flickering. Prevents motion blur
 
 //Configs
 const int operand=2;        //Count of numbers to be operated
@@ -42,7 +44,7 @@ struct state {
 
 void setup() {
   for (int i=0;i<ledcount;i++) pinMode(ledpin[i],OUTPUT);
-  pinMode(backlightpin,OUTPUT);
+  //pinMode(backlightpin,OUTPUT);
   for (int i=0;i<butcount;i++) {
     pinMode(butpin[i], INPUT);
     digitalWrite(butpin[i], HIGH);       //Turn on pullup resistors, no additional resistor needed. Remember that 0 means pressed.
@@ -50,7 +52,7 @@ void setup() {
 
   Serial.begin(9600);
   lcd.begin(16, 2);                     //Set up the LCD's number of columns and rows
-  digitalWrite(backlightpin,HIGH);
+  //digitalWrite(backlightpin,HIGH);
 
   // Print a message to the LCD.
   lcd.print("WSCalc 20160 Calculator");
@@ -72,9 +74,23 @@ void loop() {
   Serial.print(num[1]);
   Serial.print(' ');
   Serial.print(glbstate);
+  Serial.print(' ');
+  Serial.print(num[glbstate-1] / iterate);
   Serial.println();
 
-  if (glbstate==0) scrolltext(10,23); //Scroll text with 10 ms delay and 23 char length
+  //Debugging using serial input
+  if (Serial.available()) {
+    // wait a bit for the entire message to arrive
+    delay(100);
+    // read all the available characters
+    while (Serial.available() > 0) {
+      //read each char
+      int in=Serial.read() - '0';
+      butstate[in].now=!butstate[in].prev;
+    }
+  }
+  
+  if (glbstate==0) scrolltext(500,23); //Scroll text with 10 ms delay and 23 char length
   
   //Button 1 - Enter
   if ((butstate[0].now == HIGH) && (butstate[0].now != butstate[0].prev)) {
@@ -104,12 +120,20 @@ void loop() {
 
   //Dirty, problem: 10^x sometimes return 10^x -1 or 10^x -2 even using custom function using int
   while ((iterate % 10 != 0) && (iterate!=1)) iterate++;
+
+  //Getting individual digits
+  String digits = String(num[glbstate-1]);
+  int diglen=digits.length()-1;
   
   //Button 2 - Increase
   if ((butstate[1].now == HIGH) && (butstate[1].now != butstate[1].prev)) {
-    if (glbstate>=1 && glbstate<=2){
-      if (num[glbstate-1] / iterate !=9) num[glbstate-1]+=iterate;    //Iterate the pointer-th digit of i-th number for every push
-      else num[glbstate-1]-=9*iterate;                                //Revert the pointer-th digit to zero if it's 9
+    if (glbstate>=1 && glbstate<=2){  //Preventing error for digilen < pointer
+      if (diglen<pointer) {  //If digilen<pointer, then pointer points a zero element. Add
+        num[glbstate-1]+=iterate;
+      } else {
+        if (digits[diglen-pointer] !='9') num[glbstate-1]+=iterate;    //Iterate the pointer-th digit of i-th number for every push
+        else num[glbstate-1]-=9*iterate;                                //Revert the pointer-th digit to zero if it's 9
+      }
     }
     if (glbstate==3) {
       if (calc>=operatorcnt-1) calc=0;  //Choose math operation. <Addition> Loop if out of boundary
@@ -119,9 +143,11 @@ void loop() {
 
   //Button 3 - Decrease
   if ((butstate[2].now == HIGH) && (butstate[2].now != butstate[2].prev)) {
-    if (glbstate>=1 && glbstate<=2){
-      if (num[glbstate-1] / iterate !=0) num[glbstate-1]-=iterate;    //Revert the pointer-th digit of i-th number for every push
-      else num[glbstate-1]+=9*iterate;                                //Revert the pointer-th digit to 9 if it's 0
+    if (diglen<pointer) {  //Preventing error for digilen < pointer
+        num[glbstate-1]+=9*iterate; //If digilen<pointer, then pointer points a zero element. Revert to 9
+      } else {
+        if (digits[diglen-pointer] !='0') num[glbstate-1]-=iterate;    //Iterate the pointer-th digit of i-th number for every push
+        else num[glbstate-1]+=9*iterate;                                //Revert the pointer-th digit to 9 if it's 0
     }
     if (glbstate==3) {
       if (calc<=operatorcnt-1) calc=operatorcnt-1;  //Choose math operation. <Addition> Loop if out of boundary
@@ -186,7 +212,11 @@ void loading() {  //~2s of fading LEDs
 void scrolltext(int dely, int len) {
   //Move left len times (or disapepar)
   if (strpos<len) {
+    lcd.noDisplay();  //Prevent motion blur
+    delay(flicker);
     lcd.scrollDisplayLeft();
+    delay(flicker);
+    lcd.display();
     strpos++;
     delay(dely);
   } else { //Text completely disappear
