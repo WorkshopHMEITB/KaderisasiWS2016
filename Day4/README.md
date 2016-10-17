@@ -1,6 +1,6 @@
-#Tugas Day 4
+# Tugas Day 4
 
-##Berikut spesifikasinya:
+## Berikut spesifikasinya:
 1. Install Sensoduino di *handphone*
 2. Install RealTerm di *laptop*
 3. Konfigurasi Sensoduino - RealTerm hingga dapat mengirim data
